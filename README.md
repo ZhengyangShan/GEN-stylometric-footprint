@@ -34,9 +34,9 @@ Data Processing  -->  LLM Generation -->  Cleaning &    -->  PCA &
 | Gemma-3-12B-IT | 12B | AI-Generation |
 | GPT-OSS-20B | 20B | AI-Generation |
 | Gemma-3-27B-IT | 27B | AI-Generation |
-| LLaMA-3.3-70B-Instruct | 70B | AI-Generation and Ai-Editing |
-| Qwen-2.5-72B-Instruct | 72B | AI-Generation and Ai-Editing |
-| GPT-OSS-120B | 120B | AI-Generation and Ai-Editing |
+| LLaMA-3.3-70B-Instruct | 70B | AI-Generation and AI-Editing |
+| Qwen-2.5-72B-Instruct | 72B | AI-Generation and AI-Editing |
+| GPT-OSS-120B | 120B | AI-Generation and AI-Editing |
 
 ## Quick Start
 
