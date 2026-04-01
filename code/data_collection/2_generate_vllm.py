@@ -1,29 +1,6 @@
 """
 Step 2b: Text Generation via vLLM
 ==================================
-High-throughput text generation using vLLM. Supports running multiple
-models sequentially with automatic GPU memory management.
-
-Usage:
-    # Run a single model:
-    python 2_generate_vllm.py \
-        --input /path/to/five_domain_prompts.csv \
-        --output_dir /path/to/output/ \
-        --models "Qwen/Qwen2.5-7B-Instruct"
-
-    # Run multiple models:
-    python 2_generate_vllm.py \
-        --input /path/to/five_domain_prompts.csv \
-        --output_dir /path/to/output/ \
-        --models "Qwen/Qwen2.5-7B-Instruct,meta-llama/Llama-3.3-70B-Instruct"
-
-    # Rerun missing prompts for a model:
-    python 2_generate_vllm.py \
-        --input /path/to/five_domain_prompts.csv \
-        --output_dir /path/to/output/ \
-        --models "Qwen/Qwen2.5-72B-Instruct" \
-        --rerun_missing
-
 Output:
     One JSONL file per model in output_dir:
     {model_tag}_text.jsonl with {"model", "prompt", "human_text", "source", "machine_text"}
