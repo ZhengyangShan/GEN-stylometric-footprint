@@ -22,61 +22,8 @@ domain/LLM-specific vs. universally discriminative.
 Two importance signals at every level
 --------------------------------------
   coef_importance  mean |logistic-regression coefficient| across n_runs CV splits
-  perm_importance  ΔAcc when a feature column is randomly shuffled on held-out test
-                   (direct "if I break this feature, how much does accuracy drop?")
+  perm_importance  ΔAcc         
 
-Key narratives
---------------
-  • L0 vs L1/L2 coef_importance gap → feature weight shifts when model only sees
-    one domain / LLM.  High shift = the global model over/under-weights this feature
-    for this condition.
-
-  • Jaccard overlap of top-5 across L1 conditions → feature stability across domains.
-    High overlap = universally useful.  Low overlap = domain-specific signal.
-
-  • Jaccard overlap of top-5 across L2 conditions → feature stability across LLMs.
-
-  • Feature with high L0 perm importance but low L1/L2 perm importance
-    → important globally but brittle within specific conditions.
-  • Feature that stays high across ALL conditions → transfer-robust.
-
-  • L3 vs L0 coef_shift → what a specialist learns that the generalist misses.
-
-Saved output (all under SAVE_DIR)
------------------------------------
-  accuracy_all_levels.csv          – accuracy + top-5 features for every level/condition
-
-  L0_global/
-      coef_importance.csv          – mean |coef| per feature (global model)
-      perm_importance.csv          – ΔAcc per feature (global model, full test set)
-
-  L1_domain/
-      accuracy.csv                 – accuracy per domain-specific model
-      coef_importance.csv          – features × domains  (each column = domain model)
-      perm_importance.csv          – features × domains
-      perm_shift.csv               – Δ perm vs L0 global (positive = more important here)
-      feature_stability.csv        – per feature: how many domains it appears in top-5
-      jaccard_overlap.csv          – pairwise Jaccard similarity of top-5 between domains
-
-  L2_llm/
-      accuracy.csv                 – accuracy per LLM-specific model
-      coef_importance.csv          – features × LLMs
-      perm_importance.csv          – features × LLMs
-      perm_shift.csv               – Δ perm vs L0 global
-      feature_stability.csv        – per feature: how many LLMs it appears in top-5
-      jaccard_overlap.csv          – pairwise Jaccard similarity of top-5 between LLMs
-
-  L3_pair/
-      accuracy.csv                 – accuracy per (domain × LLM) pair model
-      coef_importance.csv          – features × pairs
-      perm_importance.csv          – features × pairs
-      coef_shift.csv               – Δ coef vs L0 global
-      perm_shift.csv               – Δ perm vs L0 global
-
-  comparison/
-      cross_level_perm_importance.csv   – features × all conditions (L0+L1+L2) combined
-      cross_level_coef_importance.csv   – features × all conditions (L0+L3) combined
-      feature_robustness_ranking.csv    – per-feature robustness score across ALL conditions
 """
 
 import os
