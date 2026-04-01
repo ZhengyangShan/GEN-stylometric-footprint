@@ -49,7 +49,6 @@ DOUBLE_COL_WIDTH = 12
 
 # Paper results auto-save directory.
 # All analysis functions write CSVs here automatically when this is set.
-# Override in notebook:  import model_logistic_notebook as m; m.PAPER_RESULTS_DIR = "/your/path"
 # Set to None to disable all auto-saving.
 PAPER_RESULTS_DIR: str = "./paper_results"
 
