@@ -4,19 +4,6 @@ Step 4: PCA and Feature Analysis
 Performs PCA, correlation analysis, VIF checks, and factor analysis on the
 14 stylometric features to understand the feature space structure.
 
-Usage:
-    python 4_pca_analysis.py \
-        --input /path/to/models_generations_with_features.csv \
-        --output_dir /path/to/pca_results/
-
-Outputs:
-    - pca_explained_variance.png: Cumulative variance plot
-    - correlation_matrix.png: Feature correlation heatmap
-    - pca_scatter_2d.png: Human vs LLM in PC1-PC2 space
-    - pca_scatter_3d.png: Human vs LLM in PC1-PC2-PC3 space
-    - generator_clustering.png: Generator centroids in PCA space
-    - vif_table.csv: Variance inflation factors per feature
-    - loadings.csv: PCA component loadings
 """
 
 import argparse
