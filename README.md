@@ -116,3 +116,21 @@ All models use the following default generation parameters:
 - **Feature importance at 4 levels**: Global (L0), Per-Domain (L1), Per-LLM (L2), Per-Pair (L3)
 - **Feature dynamics**: AI-edited text analysis
 - **Feature robustness ranking**: Which features transfer well across conditions
+
+
+## AI-Editing Experiment
+
+Applies 303 editing prompts (Thai et al., 2025) to human-written documents with random revision ratios. Run from `code/`, requires **4 GPUs**.
+
+```bash
+# Full run
+bash editing/run_editing.sh
+
+# Quick test
+bash editing/run_editing.sh --max-prompts 10
+
+# Custom run
+bash editing/run_editing.sh --prompt-split test --samples-per-domain 200 --min-revision-pct 50 --max-revision-pct 50
+```
+
+Change `MODEL_NAME` in `run_editing.sh` to switch between `Qwen/Qwen2.5-72B-Instruct` (default), `meta-llama/Llama-3.3-70B-Instruct`, or `openai/gpt-oss-120b`. Results are saved to `editing/results/editlens_<timestamp>/`.

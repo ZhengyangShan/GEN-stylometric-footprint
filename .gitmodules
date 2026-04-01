@@ -1,0 +1,3 @@
+[submodule "code/editing/EditLens"]
+	path = code/editing/EditLens
+	url = https://github.com/pangramlabs/EditLens.git
