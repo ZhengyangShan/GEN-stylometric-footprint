@@ -75,6 +75,7 @@ python -c "
 from feature_extraction import extract_all_features
 features = extract_all_features('Your sample text here.')
 print(features)
+"
 
 # 5. Classification & transfer learning
 python 5_classification.py
