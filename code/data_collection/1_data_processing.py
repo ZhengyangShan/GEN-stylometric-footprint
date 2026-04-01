@@ -7,21 +7,6 @@ Samples 1,000 prompts from each of 5 domains (Wikipedia, WikiHow, ArXiv,
 Reddit, Story Generation) with stratified/balanced sampling, producing a
 final CSV of 5,000 (prompt, human_text, source) rows.
 
-Usage:
-    python 1_data_processing.py \
-        --m4_csv  /path/to/processed_M4.csv \
-        --stories_dir /path/to/stories/ \
-        --output /path/to/five_domain_prompts.csv
-
-Inputs:
-    - processed_M4.csv: The M4 dataset containing human-written texts from
-      Wikipedia, WikiHow, ArXiv, and Reddit domains.
-    - stories/ directory: Folder of story_*.json files for the summarization
-      domain (used only if summarization is enabled).
-    - HuggingFace "euclaise/writingprompts" dataset (downloaded automatically).
-
-Output:
-    - five_domain_prompts.csv: 5,000 rows with columns [prompt, human_text, source].
 """
 
 import argparse
