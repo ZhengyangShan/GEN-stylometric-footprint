@@ -1,6 +1,4 @@
-# AI-Generated Text Detection via Stylometric Features
-
-A complete pipeline for detecting AI-generated text using stylometric (writing style) features. We collect human-written texts from 5 domains, generate parallel AI texts using 8 LLMs, extract 14 linguistic features, and train logistic regression classifiers to distinguish human from machine writing. The analysis includes cross-domain/cross-model transfer learning and multi-level feature importance analysis.
+# AI Writers Have a Consistent Stylometric Footprint, but AI Editors Do Not
 
 ## Pipeline Overview
 
@@ -16,20 +14,6 @@ Data Processing  -->  LLM Generation -->  Cleaning &    -->  PCA &
       + Transfer)           Global/Domain/LLM)      Figures)
 ```
 
-## File Structure
-
-| File | Description |
-|------|-------------|
-| `1_data_processing.py` | Builds multi-domain prompt dataset (Wikipedia, WikiHow, ArXiv, Reddit, Story Generation) with stratified sampling |
-| `2_generate_hf_transformers.py` | Single-model text generation via HuggingFace Transformers (e.g., Gemma-3-12B) |
-| `2_generate_vllm.py` | High-throughput multi-model generation via vLLM with automatic GPU memory management |
-| `3_clean_llm_artifacts.py` | Cleans model-specific artifacts (prompt echoes, markdown, chain-of-thought, chatty openers, disclaimers) from all 8 LLMs |
-| `3c_feature_extraction.py` | Extracts 14 stylometric features from text |
-| `4_pca_analysis.py` | PCA, correlation, VIF, and factor analysis on the feature space |
-| `5_classification.py` | Logistic regression classifiers with cross-domain and cross-model transfer learning analysis |
-| `6_feature_importance.py` | Multi-level feature importance (Global / Per-Domain / Per-LLM / Per-Pair) |
-| `7_feature_importance_plots.py` | Publication-quality figures for feature importance results |
-
 ## Features Extracted
 
 14 stylometric features spanning 4 categories:
@@ -43,16 +27,16 @@ Data Processing  -->  LLM Generation -->  Cleaning &    -->  PCA &
 
 ## LLMs Used for Generation
 
-| Model | Size | Class |
+| Model | Size | Where to use |
 |-------|------|-------|
-| Qwen-2.5-7B-Instruct | 7B | Small |
-| LLaMA-3.1-8B-Instruct | 8B | Small |
-| Gemma-3-12B-IT | 12B | Small |
-| GPT-OSS-20B | 20B | Mid |
-| Gemma-3-27B-IT | 27B | Mid |
-| LLaMA-3.3-70B-Instruct | 70B | Large |
-| Qwen-2.5-72B-Instruct | 72B | Large |
-| GPT-OSS-120B | 120B | Large |
+| Qwen-2.5-7B-Instruct | 7B | AI-Generation |
+| LLaMA-3.1-8B-Instruct | 8B | AI-Generation |
+| Gemma-3-12B-IT | 12B | AI-Generation |
+| GPT-OSS-20B | 20B | AI-Generation |
+| Gemma-3-27B-IT | 27B | AI-Generation |
+| LLaMA-3.3-70B-Instruct | 70B | AI-Generation and Ai-Editing |
+| Qwen-2.5-72B-Instruct | 72B | AI-Generation and Ai-Editing |
+| GPT-OSS-120B | 120B | AI-Generation and Ai-Editing |
 
 ## Quick Start
 
@@ -75,17 +59,11 @@ python 1_data_processing.py \
     --output data/five_domain_prompts.csv
 
 # 2. Generate AI text (choose one method)
-# Option A: vLLM (recommended for multi-model, high throughput)
+# vLLM (recommended for multi-model, high throughput)
 python 2_generate_vllm.py \
     --input data/five_domain_prompts.csv \
     --output_dir data/generations/ \
     --models "Qwen/Qwen2.5-7B-Instruct,google/gemma-3-12b-it"
-
-# Option B: HuggingFace Transformers (single model)
-python 2_generate_hf_transformers.py \
-    --model google/gemma-3-12b-it \
-    --input data/five_domain_prompts.csv \
-    --output data/generations/gemma3_12b.jsonl
 
 # 3. Clean LLM artifacts
 python 3_clean_llm_artifacts.py \
@@ -97,20 +75,14 @@ python -c "
 from feature_extraction import extract_all_features
 features = extract_all_features('Your sample text here.')
 print(features)
-"
 
-# 5. PCA analysis
-python 4_pca_analysis.py \
-    --input data/models_generations_with_features.csv \
-    --output_dir results/pca/
-
-# 6. Classification & transfer learning
+# 5. Classification & transfer learning
 python 5_classification.py
 
-# 7. Feature importance analysis
+# 6. Feature importance analysis
 python 6_feature_importance.py
 
-# 8. Generate paper figures
+# 7. Generate paper figures
 python 7_feature_importance_plots.py
 ```
 
@@ -129,17 +101,17 @@ All models use the following default generation parameters:
 
 ## Data Domains
 
-| Domain | Source | Prompts | Task |
-|--------|--------|---------|------|
-| Wikipedia | M4 Dataset | 1,000 | Write article with given title |
-| WikiHow | M4 Dataset | 1,000 | Write how-to article with given title |
-| ArXiv | M4 Dataset | 1,000 | Rephrase abstract with given title |
-| Reddit | M4 Dataset | 1,000 | Answer question in specified voice style |
-| Story Generation | WritingPrompts (HF) | 1,000 | Generate story from scenario |
+| Domain | Prompts | Task |
+|--------|---------|------|
+| Wikipedia |  1,000 | Write article with given title |
+| WikiHow | 1,000 | Write how-to article with given title |
+| ArXiv | 1,000 | Rephrase abstract with given title |
+| Reddit | 1,000 | Answer question in specified voice style |
+| Story Generation |  1,000 | Generate story from scenario |
 
 ## Key Analysis Outputs
 
 - **Transfer matrices**: Cross-domain and cross-model generalization accuracy
 - **Feature importance at 4 levels**: Global (L0), Per-Domain (L1), Per-LLM (L2), Per-Pair (L3)
+- **Feature dynamics**: AI-edited text analysis
 - **Feature robustness ranking**: Which features transfer well across conditions
-- **PCA visualization**: Human vs LLM separation in stylistic space
