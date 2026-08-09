@@ -24,8 +24,7 @@ stylometric-footprint/
 │   │   └── 4_pca_analysis.py             PCA, correlation, VIF
 │   ├── model/
 │   │   ├── 5_classification.py           detection + cross-domain / cross-model transfer
-│   │   ├── 6_feature_importance.py       importance at 4 levels (L0-L3)
-│   │   └── 7_feature_importance_plots.py paper figures
+│   │   └── 6_feature_importance.py       importance at 4 levels (L0-L3)
 │   └── editing/
 │       ├── run_editing.sh                entry point for the editing experiment
 │       ├── run_editing.py                sampling, prompting, metrics
@@ -107,7 +106,7 @@ Wikipedia is sampled stratified by prompt length, Reddit is balanced across voic
 ```
 1. build prompts  →  2. generate  →  3. clean  →  3b. extract features
                                                         ↓
-     7. figures  ←  6. importance  ←  5. classify  ←  4. PCA / VIF
+                    6. importance  ←  5. classify  ←  4. PCA / VIF
 ```
 
 ### 1. Build the prompt dataset
@@ -210,14 +209,6 @@ python code/model/6_feature_importance.py \
 
 Each level retrains from scratch, so L1/L2/L3 are not the global model applied to subsets. Two signals are reported per feature: mean absolute logistic coefficient, and permutation importance (accuracy drop when the feature is shuffled). Results land in `L0_global/`, `L1_domain/`, `L2_llm/`, `L3_pair/`, and `comparison/`, including `feature_robustness_ranking.csv`, which ranks features by how often they survive in the top 5 across conditions.
 
-### 7. Figures
-
-```bash
-python code/model/7_feature_importance_plots.py
-```
-
-Reads `./feature_importance_results` and writes to `./feature_importance_results/paper_figures`. Both paths are constants at the top of the file.
-
 ---
 
 ## Feature set
@@ -258,8 +249,6 @@ Sampling settings, shared by both generation scripts:
 | `top_k` | 50 |
 | `repetition_penalty` | 1.2 |
 
-vLLM runs in `bfloat16` with eager execution. The Transformers path additionally sets `do_sample=True`.
-
 ---
 
 ## AI-editing experiment
@@ -287,12 +276,10 @@ experiment_results.csv       edits plus edit-distance metrics
 experiment_results.json      same, as JSON
 ```
 
-**Two inputs are not in this repo.** The script expects `editing/sampled_subset_1000.csv` with `text`, `source`, and `label` columns, and it imports `editing/prompts.py`, which must provide `get_editlens_prompt`, `get_editlens_prompts`, `EDITLENS_CATEGORIES`, `get_editing_prompt`, and `list_features`. Supply both before running.
-
 ---
 
 ## Credits
 
-- **M4 corpus** for the Wikipedia, WikiHow, ArXiv, and Reddit prompts.
-- **WritingPrompts** (`euclaise/writingprompts`) for story generation.
-- **EditLens**, Thai et al., ICLR 2026, [arXiv:2510.03154](https://arxiv.org/abs/2510.03154), for the 303 editing prompts. Included here as a submodule from [pangramlabs/EditLens](https://github.com/pangramlabs/EditLens).
+- **M4** for the Wikipedia, WikiHow, ArXiv, and Reddit prompts. Wang et al., *M4: Multi-generator, Multi-domain, and Multi-lingual Black-Box Machine-Generated Text Detection*, EACL 2024. [aclanthology.org/2024.eacl-long.83](https://aclanthology.org/2024.eacl-long.83/)
+- **WritingPrompts** for story generation. [huggingface.co/datasets/euclaise/writingprompts](https://huggingface.co/datasets/euclaise/writingprompts)
+- **EditLens** for the 303 editing prompts. Thai et al., ICLR 2026. [arXiv:2510.03154](https://arxiv.org/abs/2510.03154), code included here as a submodule from [pangramlabs/EditLens](https://github.com/pangramlabs/EditLens).
