@@ -1,6 +1,6 @@
 # AI Writers Have a Consistent Stylometric Footprint, but AI Editors Do Not
 
-[Paper](https://arxiv.org/abs/2608.27855) · [Dataset](https://huggingface.co/datasets/szyszy/GEN)
+[📄 Paper](https://arxiv.org/abs/2608.27855) · [🤗 Dataset](https://huggingface.co/datasets/szyszy/GEN)
 
 Research code for a study on stylometric detection of machine-written text.
 
